@@ -10,7 +10,7 @@ print(Debito(ValorFinanceiro))
 '''
 
 num = int(input('Informe um número'))
-while num < 10:
+while num < 15:
     print ("-"*100) 
     num = int(input('Informe um número'))
 print ("Fim")
