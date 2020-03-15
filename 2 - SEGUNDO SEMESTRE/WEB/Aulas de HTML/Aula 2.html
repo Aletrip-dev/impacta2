@@ -3,13 +3,35 @@
     <meta charser="utf-8"/>
     <Title>Página de testes</Title>
     <link rel= "stylesheet" href ="Site.css"/>
+
+    <!--TAG para código Java-->
+    <script src="Scripts/Script1.js"></script>
+
+    <Script>
+        var r =[2,5,6,8];
+        var s =[1,3,4,7,11];
+        var x =[0];
+        var i;
+        for(i =0;i <= 3;i++){
+            x[i] = r[i];
+        }
+        for(i=0;i <= 4;i++){
+            x[i+4] = s[i];
+        }
+        document.write(x[8]+"<br/>");
+        document.write(i);
+    </script>
+
+    <!--Continuação da página-->
 <html>
     <body>
         <header>
         <link rel="impacta" charset="impacta.ico"/> <! define um ícone para o topo da págiana no navegador>
         <img src="/Users/admin/IMPACTA/impacta2/2 - SEGUNDO SEMESTRE/WEB/Aulas de HTML/impacta.png" width="150px"/>
-        <h1>Porque nós o usamos?<br/><br/>
-        </h1>
+        <div class="titulos">
+            <h1>Porque nós o usamos?</h1>
+            <h2>Página de testes de HTML</h2>
+        </div>
         </header>
     <div>
         <p>
@@ -25,7 +47,7 @@
     </div>
     <div>
             </p>
-                <ul id="Lista_1"> <! caso queira uma lista com números basta mudar o comando para "ol">
+                <ul class ="tabela" id="Lista_1"> <! caso queira uma lista com números basta mudar o comando para "ol">
                     <li id="item_1">Item 1</li>
                         <ol id="sublista_1">
                             <li id="Sub1">Subitem 1</li><br/>

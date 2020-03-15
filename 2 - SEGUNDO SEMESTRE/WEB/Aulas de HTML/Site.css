@@ -11,9 +11,15 @@ header {
 footer{
     font-style: initial;
 }
-header h1 {
+header h1,
+header h2{
     color: white;
-}
+    margin: 0;
+    text-transform: uppercase;
+ }
+/*div.titulos{
+    display: inline-block;
+*/
 
 a.link {
     color: rgb(46, 48, 48);
@@ -24,4 +30,12 @@ footer{
     background-color:rgb(148, 146, 146);
     color: white;
     text-align: center;
+}
+
+/*Realiza alterações no CSS apenas quando o tamanho da tela for de no máximo X pixels*/
+@media(max-width: 500px){
+    header {
+        background-color:rgb(175, 14, 14);
+        text-align: center;
+    }
 }
