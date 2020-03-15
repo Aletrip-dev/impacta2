@@ -1,0 +1,18 @@
+body{
+    font-family: sans-serif;
+}
+
+header {
+    background-color:grey;
+}
+
+footer{
+    font-style: initial;
+}
+header h1 {
+    color: white;
+}
+
+a.link {
+    color: rgb(46, 48, 48);
+}
