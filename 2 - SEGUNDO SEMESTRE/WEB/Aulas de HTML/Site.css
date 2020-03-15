@@ -1,9 +1,11 @@
 body{
     font-family: sans-serif;
+    text-align: justify;
 }
 
 header {
-    background-color:grey;
+    background-color:rgb(163, 162, 162);
+    text-align: center;
 }
 
 footer{
@@ -15,4 +17,11 @@ header h1 {
 
 a.link {
     color: rgb(46, 48, 48);
+    font-weight: bold;
+    text-transform: uppercase   ;
+}
+footer{
+    background-color:rgb(148, 146, 146);
+    color: white;
+    text-align: center;
 }
