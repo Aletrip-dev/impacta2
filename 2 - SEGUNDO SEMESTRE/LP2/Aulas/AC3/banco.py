@@ -86,13 +86,17 @@ class Banco():
         e o saldo inicial.
         Caso o saldo inicial seja menor que 0 devolve um ValueError
         """
-        self.__clientes = clientes
-        self.__saldo_ini = saldo_ini
+        nova_conta = [Conta([clientes],1,saldo_ini)]
+        while saldo_ini < 0:
+            raise ValueError('Valor negativo')
 
 
-    def lista_contas(self) -> List['Conta']:
+    def lista_contas(self) -> 'conta':
         """Retorna a lista com todas as contas do banco."""
-        pass
+        conta = Conta([Cliente],1,saldo_inicial = 100)
+        conta2 = Conta([Cliente],2,saldo_inicial = 500)
+        lista = [conta, conta2]
+        return lista
 
 
 class Conta():
