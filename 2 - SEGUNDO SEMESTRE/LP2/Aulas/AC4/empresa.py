@@ -32,7 +32,6 @@ class Funcionario(Pessoa):
         self.emal = email
         self.carga_horaria_semanal = carga_horaria_semanal
         self.sal_base = 0
-        self.salario = 0
         self.semanas = 4.5
         self.carga_h = 0
 
@@ -48,7 +47,7 @@ class Funcionario(Pessoa):
         altera a carga horária do funcionário, respeitando o limite de horas por categoria.
         Caso o numero informado seja inválido, levanta um ValueError
         '''
-        self.carga_h = nova_carga_horaria
+        self.carga_horaria_semanal = nova_carga_horaria
         raise NotImplementedError
 
     def consulta_carga_horaria(self) -> int:
@@ -62,7 +61,8 @@ class Funcionario(Pessoa):
         '''
         Aplica um aumento de 5% no valor da hora trabalhada para o funcionário
         '''
-        self.salario *= 105
+        aumento =  (self.sal_base * self.carga_horaria_semanal * self.semanas)*1.05
+        return aumento
         raise NotImplementedError
 
 
@@ -104,9 +104,10 @@ class Programador(Funcionario):
 
         self.semanas = 4.5
         self.sal_base = 35.00
+        self.carga_h = 0
         self.carga_horaria_semanal = carga_horaria_semanal
         if self.carga_horaria_semanal < 20 or self.carga_horaria_semanal > 40:
-            raise ValueError('Carga Horária Semalan Inválida')
+            raise ValueError('Carga Horária Semanal Inválida')
         pass
     
     #salário
@@ -117,6 +118,33 @@ class Programador(Funcionario):
         '''
         salario =  self.sal_base * self.carga_horaria_semanal * self.semanas
         return salario
+
+    #carga horária
+
+    def consulta_carga_horaria(self) -> int:
+        '''
+        Devolve a carga horária de trabalho do funcionário
+        '''
+        return self.carga_horaria_semanal
+
+
+    def altera_carga_horaria(self, nova_carga_horaria: int) -> None:
+        '''
+        altera a carga horária do funcionário, respeitando o limite de horas por categoria.
+        Caso o numero informado seja inválido, levanta um ValueError
+        '''
+
+        if nova_carga_horaria < 20 or nova_carga_horaria > 40:
+            raise ValueError('Carga Horária Semalan Inválida')
+        self.carga_horaria_semanal = nova_carga_horaria
+
+    def aumenta_salario(self) -> None:
+        '''
+        Aplica um aumento de 5% no valor da hora trabalhada para o funcionário
+        '''
+        reajuste = self.sal_base * 0.05
+        self.sal_base = self.sal_base + reajuste
+        
 
 class Estagiario(Funcionario):
     '''
@@ -146,6 +174,37 @@ class Estagiario(Funcionario):
         '''
         salario =  self.sal_base * self.carga_horaria_semanal * self.semanas + self.aux_alim
         return salario
+
+    def consulta_carga_horaria(self) -> int:
+        '''
+        Devolve a carga horária de trabalho do funcionário
+        '''
+        return self.carga_horaria_semanal
+
+
+    def altera_carga_horaria(self, nova_carga_horaria: int) -> None:
+        '''
+        altera a carga horária do funcionário, respeitando o limite de horas por categoria.
+        Caso o numero informado seja inválido, levanta um ValueError
+        '''
+        self.carga_horaria_semanal = nova_carga_horaria
+
+    def aumenta_salario(self) -> None:
+        '''
+        Aplica um aumento de 5% no valor da hora trabalhada para o funcionário
+        '''
+        reajuste = self.sal_base * 0.05
+        self.sal_base = self.sal_base + reajuste
+        
+    def altera_carga_horaria(self, nova_carga_horaria: int) -> None:
+        '''
+        altera a carga horária do funcionário, respeitando o limite de horas por categoria.
+        Caso o numero informado seja inválido, levanta um ValueError
+        '''
+
+        if nova_carga_horaria < 16 or nova_carga_horaria > 30:
+            raise ValueError('Carga Horária Semalan Inválida')
+        self.carga_horaria_semanal = nova_carga_horaria
 
 class Vendedor(Funcionario):
     '''
@@ -185,7 +244,35 @@ class Vendedor(Funcionario):
         salario =  self.sal_base * self.carga_horaria_semanal * self.semanas + self.aux_alim + self.aux_trans
         return salario
 
+    def consulta_carga_horaria(self) -> int:
+        '''
+        Devolve a carga horária de trabalho do funcionário
+        '''
+        return self.carga_horaria_semanal
 
+    def altera_carga_horaria(self, nova_carga_horaria: int) -> None:
+        '''
+        altera a carga horária do funcionário, respeitando o limite de horas por categoria.
+        Caso o numero informado seja inválido, levanta um ValueError
+        '''
+        self.carga_horaria_semanal = nova_carga_horaria
+
+    def aumenta_salario(self) -> None:
+        '''
+        Aplica um aumento de 5% no valor da hora trabalhada para o funcionário
+        '''
+        reajuste = self.sal_base * 0.05
+        self.sal_base = self.sal_base + reajuste
+        
+    def altera_carga_horaria(self, nova_carga_horaria: int) -> None:
+        '''
+        altera a carga horária do funcionário, respeitando o limite de horas por categoria.
+        Caso o numero informado seja inválido, levanta um ValueError
+        '''
+
+        if nova_carga_horaria < 15 or nova_carga_horaria > 45:
+            raise ValueError('Carga Horária Semalan Inválida')
+        self.carga_horaria_semanal = nova_carga_horaria      
 
     def consulta_visitas(self) -> int:
         """
@@ -229,18 +316,26 @@ class Empresa:
         '''
         Construtor da classe empresa
         '''
+        self.empresa_nome = nome
+        self.empresa_cnpj = cnpj
+        self.empresa_rea_atuacao = area_atuacao
+        self.funcionarios = equipe
+
+
+
 
     def contrata(self, novo_funcionario: Funcionario) -> None:
         '''
         Contrata um novo funcionário para a empresa (adicionando ele à lista de funcionários)
         '''
-        pass
+        novo_funcionario = ['Alex', 38, 'alex@alex.com.br',40]
+        self.lista_fucionarios.append(novo_funcionario)
 
     def lista_fucionarios(self) -> List[Funcionario]:
         '''
         Devolve um lista com todos os funcionarios
         '''
-        pass
+        return self.funcionarios
 
     def folha_pagamento(self) -> float:
         '''
