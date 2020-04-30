@@ -101,6 +101,7 @@ class Programador(Funcionario):
     # Define a carga horária
 
     def __init__(self, nome: str, idade: int, email: str, carga_horaria_semanal: int):
+        super().__init__(nome, idade, email, carga_horaria_semanal) #referencia a classe funcionario
 
         self.semanas = 4.5
         self.sal_base = 35.00
@@ -158,6 +159,7 @@ class Estagiario(Funcionario):
     # Define a carga horária
 
     def __init__(self, nome: str, idade: int, email: str, carga_horaria_semanal: int):
+        super().__init__(nome, idade, email, carga_horaria_semanal)
         self.semanas = 4.5
         self.sal_base = 15.50
         self.aux_alim = 250
@@ -225,6 +227,7 @@ class Vendedor(Funcionario):
     # Define a carga horária
 
     def __init__(self, nome: str, idade: int, email: str, carga_horaria_semanal: int):
+        super().__init__(nome, idade, email, carga_horaria_semanal)
         self.__s_visitas = 0
         self.semanas = 4.5
         self.sal_base = 30.00
@@ -316,24 +319,24 @@ class Empresa:
         '''
         Construtor da classe empresa
         '''
-        self.empresa_nome = nome
-        self.empresa_cnpj = cnpj
-        self.empresa_rea_atuacao = area_atuacao
-        self.funcionarios = equipe
+        self.nome = nome
+        self.cnpj = cnpj
+        self.area_atuacao = area_atuacao
+        self.equipe = equipe
         
 
     def contrata(self, novo_funcionario: Funcionario) -> None:
         '''
         Contrata um novo funcionário para a empresa (adicionando ele à lista de funcionários)
         '''
-        self.funcionarios.append(novo_funcionario)
+        self.equipe.append(novo_funcionario)
         
 
     def lista_fucionarios(self) -> List[Funcionario]:
         '''
         Devolve um lista com todos os funcionarios
         '''
-        return self.funcionarios
+        return self.equipe
 
     def folha_pagamento(self) -> float:
         '''
@@ -341,15 +344,13 @@ class Empresa:
         DICA: Itere sobre a lista de funcionários, fazendo cada objeto do tipo Funcionário
         calcular o próprio salário e acumule isso numa variável auxiliar.
         '''
+        soma = 0
+        for funcionario in self.equipe:
+            soma += funcionario.calcula_salario()
+        return soma
 
-        for func in self.fucionarios:
-            self.lista_fl.append(func.calcula_salario())
-
-        total = 0
-        for soma in self.lista_fl:
-            total += soma
-        return total
-
+        
+    
     def dissidio_anual(self) -> None:
         '''
         Aumenta o valor da hora trabalhada em 5% para todos os funcionários
@@ -357,6 +358,8 @@ class Empresa:
         cada objeto funcionário aumentar o próprio salário base por hora.
         '''
 
+        for funcionario in self.equipe:
+            funcionario.aumenta_salario()
 
     def listar_visitas(self) -> Dict[str, int]:
         '''
@@ -367,11 +370,19 @@ class Empresa:
         o funcionário é um vendedor, em caso positivo, adicione as informações pedidas
         ao dicionário, e por fim retorne esse dicionário (não precisa guardar em um atributo).
         '''
-        pass
+
+        l_visitas = {}
+        for func in self.equipe: #para cada func na lista de funcionários
+            if isinstance(func, Vendedor): #verifica se é um vendedor
+                l_visitas[func.emal] = func.consulta_visitas()
+        return l_visitas
+
 
     def zerar_visitas_vendedores(self) -> None:
         '''
         Zera as visitas de todos os funcionário, use a dica do método listar_visitas e
         para cada vendedor, chame o método de zerar visitas do vendedor.
         '''
-        pass
+        for func in self.equipe:
+            if isinstance(func, Vendedor):
+                func.zerar_visitas()
