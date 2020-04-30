@@ -320,16 +320,14 @@ class Empresa:
         self.empresa_cnpj = cnpj
         self.empresa_rea_atuacao = area_atuacao
         self.funcionarios = equipe
-
-
-
+        
 
     def contrata(self, novo_funcionario: Funcionario) -> None:
         '''
         Contrata um novo funcionário para a empresa (adicionando ele à lista de funcionários)
         '''
-        novo_funcionario = ['Alex', 38, 'alex@alex.com.br',40]
-        self.lista_fucionarios.append(novo_funcionario)
+        self.funcionarios.append(novo_funcionario)
+        
 
     def lista_fucionarios(self) -> List[Funcionario]:
         '''
@@ -343,7 +341,14 @@ class Empresa:
         DICA: Itere sobre a lista de funcionários, fazendo cada objeto do tipo Funcionário
         calcular o próprio salário e acumule isso numa variável auxiliar.
         '''
-        pass
+
+        for func in self.fucionarios:
+            self.lista_fl.append(func.calcula_salario())
+
+        total = 0
+        for soma in self.lista_fl:
+            total += soma
+        return total
 
     def dissidio_anual(self) -> None:
         '''
@@ -351,7 +356,7 @@ class Empresa:
         DICA: idem ao método de folha de pagamento, percorra a lista de funcionários faça
         cada objeto funcionário aumentar o próprio salário base por hora.
         '''
-        pass
+
 
     def listar_visitas(self) -> Dict[str, int]:
         '''
