@@ -271,17 +271,15 @@ class Contato:
     """
 
     def __init__(self, nome: str, telefone: str, email: str):
-        self._nome = nome
-        self._telefone = ({'principal': telefone})
-        self._email = ({'principal': email})
 
         if not isinstance(nome, str):
             raise TypeError('Nome não é uma String')
         if nome == "":
             raise CreateContactError('Contato vazio')
 
-        tel = telefone({'principal':telefone})
-        mail = email({'principal':email})
+        self._nome = nome
+        self._telefone = {'principal':telefone}
+        self._email = {'principal':email}
 
 
 
