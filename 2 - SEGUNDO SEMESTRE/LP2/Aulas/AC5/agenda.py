@@ -271,14 +271,26 @@ class Contato:
     """
 
     def __init__(self, nome: str, telefone: str, email: str):
-        pass
+        self._nome = nome
+        self._telefone = ({'principal': telefone})
+        self._email = ({'principal': email})
+
+        if not isinstance(nome, str):
+            raise TypeError('Nome não é uma String')
+        if nome == "":
+            raise CreateContactError('Contato vazio')
+
+        tel = telefone({'principal':telefone})
+        mail = email({'principal':email})
+
+
 
     @property
     def nome(self) -> str:
         """
         Retorna o valor do atributo protegido nome
         """
-        pass
+        return self._nome
 
     @nome.setter
     def nome(self, nome: str) -> None:
@@ -286,7 +298,9 @@ class Contato:
         Verifica as condições definidas para validação do nome e
         atribui o valor à variável protegida _nome se estiverem OK
         """
-        pass
+        if self._nome(Contato):
+            self._nome = nome
+
 
     def adiciona_telefone(self, telefone: str, tipo='principal') -> None:
         """
