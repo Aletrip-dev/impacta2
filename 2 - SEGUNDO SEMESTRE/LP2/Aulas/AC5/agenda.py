@@ -278,10 +278,8 @@ class Contato:
             raise CreateContactError('Contato vazio')
 
         self._nome = nome
-        self._telefone = {'principal':telefone}
-        self._email = {'principal':email}
-
-
+        self._telefone = {'principal':Telefone(telefone)}
+        self._email = {'principal':Email(email)}
 
     @property
     def nome(self) -> str:
@@ -308,7 +306,7 @@ class Contato:
         de Telefone.
         Se o tipo não for passado, deve ser por padrão tipo 'principal'.
         """
-        pass
+        self._telefone[tipo] = Telefone(telefone)
 
     def adiciona_email(self, email: str, tipo='principal') -> None:
         """
@@ -318,33 +316,36 @@ class Contato:
         de Email.
         Se o tipo não for passado, por padrão o tipo 'principal' é atualizado.
         """
-        pass
+        self._email[tipo] = Email(email)
 
     def apaga_telefone(self, tipo):
         """
         Exclui o telefone dado em `tipo` do dicionário de emails, mas não deve permitir a
         exclusão do tipo 'principal', levantando um DeleteError nesse caso
         """
-        pass
+        
+        if self._telefone.keys != ['principal']:
+            del self._telefone[tipo]
+        raise DeleteError ('Não pode apagar o telefone principal')
 
     def apaga_email(self, tipo):
         """
         Exclui o email dado em `tipo` do dicionário de emails, mas não deve permitir a
         exclusão do tipo 'principal', levantando um DeleteError nesse caso
         """
-        pass
+        del self._email[tipo]
 
     def get_telefones(self):
         """
         Retorna o dicionário de telefones
         """
-        pass
+        return self._telefone
 
     def get_emails(self):
         """
         Retorna o dicionário de emails
         """
-        pass
+        return self._email
 
     def lista_telefones(self) -> List[Tuple[str, Telefone]]:
         """
@@ -356,7 +357,7 @@ class Contato:
         DICA: usem o método items() de dicionários e convertam o resultado
         para uma lista com list().
         """
-        pass
+ 
 
     def lista_emails(self) -> List[Tuple[str, Email]]:
         """
@@ -397,7 +398,7 @@ class Contato:
         'telefones': dicionário de telefones do contato
         'emails': dicionário de emails do contato.
         """
-        pass
+        
 
     def __repr__(self):
         """
