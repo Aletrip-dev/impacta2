@@ -141,6 +141,7 @@ class Email:
             self._usuario = email.split('@')[0]
             self._dominio = email.split('@')[1]
 
+
     @staticmethod
     def valida_email(email: str) -> bool:
         """
@@ -184,10 +185,11 @@ class Email:
         if email.count('@') != 1:
             raise ValueError('A quantidade de @ está incorreta ou não existe!!!')
 
-
         if email.count('_') > 0:
             raise ValueError('Email contém caractere inválido!!!')
 
+        # Falta verificar se foi passado email com espaço, hífen, @ no começo ou no fim,
+        # se tem .., @@
 
         return True
 
@@ -209,6 +211,7 @@ class Email:
         
         if 'faculdadeimpacta.com.br' in self._dominio:
             return True
+        #verificar método para validar apenas a strig passada
 
     def __eq__(self, other):
         """
@@ -272,14 +275,9 @@ class Contato:
 
     def __init__(self, nome: str, telefone: str, email: str):
 
-        if not isinstance(nome, str):
-            raise TypeError('Nome não é uma String')
-        if nome == "":
-            raise CreateContactError('Contato vazio')
-
-        self._nome = nome
-        self._telefone = {'principal':Telefone(telefone)}
-        self._email = {'principal':Email(email)}
+        self.nome = nome
+        self._telefones = {'principal':Telefone(telefone)}
+        self._emails = {'principal':Email(email)}
 
     @property
     def nome(self) -> str:
@@ -294,7 +292,14 @@ class Contato:
         Verifica as condições definidas para validação do nome e
         atribui o valor à variável protegida _nome se estiverem OK
         """
-        if self._nome(Contato):
+
+        if not isinstance(nome, str):
+            raise TypeError('Nome não é uma String')
+
+        elif nome == "":
+            raise CreateContactError('Contato vazio')
+
+        else:
             self._nome = nome
 
 
@@ -306,7 +311,8 @@ class Contato:
         de Telefone.
         Se o tipo não for passado, deve ser por padrão tipo 'principal'.
         """
-        self._telefone[tipo] = Telefone(telefone)
+        if Telefone.valida_telefone(telefone):
+            self._telefones[tipo] = Telefone(telefone)
 
     def adiciona_email(self, email: str, tipo='principal') -> None:
         """
@@ -316,36 +322,40 @@ class Contato:
         de Email.
         Se o tipo não for passado, por padrão o tipo 'principal' é atualizado.
         """
-        self._email[tipo] = Email(email)
+        if Email.valida_email(email):
+            self._emails[tipo] = Email(email)
 
     def apaga_telefone(self, tipo):
         """
         Exclui o telefone dado em `tipo` do dicionário de emails, mas não deve permitir a
         exclusão do tipo 'principal', levantando um DeleteError nesse caso
         """
-        
-        if self._telefone.keys != ['principal']:
-            del self._telefone[tipo]
-        raise DeleteError ('Não pode apagar o telefone principal')
+        if tipo == 'principal':
+            raise DeleteError ('Não pode apagar o email principal')
+        self._telefones.pop(tipo)
+
 
     def apaga_email(self, tipo):
         """
         Exclui o email dado em `tipo` do dicionário de emails, mas não deve permitir a
         exclusão do tipo 'principal', levantando um DeleteError nesse caso
         """
-        del self._email[tipo]
+
+        if tipo == 'principal':
+            raise DeleteError ('Não pode apagar o email principal')
+        self._emails.pop(tipo)
 
     def get_telefones(self):
         """
         Retorna o dicionário de telefones
         """
-        return self._telefone
+        return self._telefones
 
     def get_emails(self):
         """
         Retorna o dicionário de emails
         """
-        return self._email
+        return self._emails
 
     def lista_telefones(self) -> List[Tuple[str, Telefone]]:
         """
@@ -357,7 +367,11 @@ class Contato:
         DICA: usem o método items() de dicionários e convertam o resultado
         para uma lista com list().
         """
- 
+        lista_telefones = []
+        for c, v in self._telefones.item():
+            lista_telefones.append((c,v))
+        return lista_telefones
+
 
     def lista_emails(self) -> List[Tuple[str, Email]]:
         """
@@ -369,7 +383,11 @@ class Contato:
         DICA: usem o método items() de dicionários e convertam o resultado
         para uma lista com list().
         """
-        pass
+        lista_emails = []
+        for c, v in self._emails.item():
+            lista_emails.append((c,v))
+        return lista_emails
+
 
     def buscar(self, valor_busca: str):
         """
@@ -388,7 +406,19 @@ class Contato:
             '345' em qualquer lugar: '11999888345', 'João do 345',
             'joao345@exemplo.com'
         """
-        pass
+        
+        if valor_busca in self.nome:
+            return True
+
+        for k, v in self._telefones.items():
+            if valor_busca in v.telefone:
+                return True
+
+        for k, v in self._emails.items():
+            if valor_busca in v.email:
+                return True
+
+        return False
 
     def create_dump(self):
         """
@@ -398,14 +428,18 @@ class Contato:
         'telefones': dicionário de telefones do contato
         'emails': dicionário de emails do contato.
         """
-        
+        return {
+            'nome': self._nome,
+            'telefones': self._telefones,
+            'emails': self._emails
+        }
 
     def __repr__(self):
         """
         Representação de um contato, use o padrão:
         '<Contato: nome-do-contato-aqui>'
         """
-        pass
+        return f'<Contato: {self._nome}>'
 
 
 class Agenda:
@@ -419,13 +453,15 @@ class Agenda:
     """
 
     def __init__(self, titular: str, meu_numero: str, meu_email: str):
-        pass
+
+        self.meu_contato = Contato(titular, meu_numero, meu_email)
+        self.contatos = []
 
     def novo_contato(self, nome: str, telefone: str, email: str) -> None:
         """
         Insere um novo contato na agenda, adicionando-o à lista de contatos.
         """
-        pass
+        self.contatos.append(Contato(nome, telefone, email))
 
     def busca_contatos(self, valor_busca) -> List[Contato]:
         """
@@ -436,7 +472,12 @@ class Agenda:
         correspondência (buscar) de cada contato para ver se ele deve ou não
         ser adicionado à lista
         """
-        pass
+        relacao = []
+        for contato in self.contatos:
+            if contato.buscar(valor_busca):
+                relacao.append(contato)
+        return relacao
+
 
     def ligar(self, valor_busca, tipo='principal') -> None:
         """
@@ -452,7 +493,13 @@ class Agenda:
         do contato verificando se o primeiro valor da tupla é igual ao tipo
         dado. Se sim, o telefone a ser chamado é o segundo valor da tupla.
         """
-        pass
+     
+        l = self.busca_contatos(valor_busca.lower())
+        for contato in l:
+            for c in contato.lista_telefones():
+                if tipo == c[0]:
+                    return f'ligando para {contato.nome}: {c[1]}'
+        return f'Nenhum contato possui o tipo de telefone dado!'
 
     def apagar_contato(self, email_busca) -> str:
         """
@@ -464,7 +511,16 @@ class Agenda:
         Se nenhum contato for encontrado, retorna a mensagem:
         'Nenhum contato corresponde ao email dado.'
         """
-        pass
+
+        lista = self.busca_contatos(email_busca)
+        for contato in lista:
+            for x in contato.lista_emails():
+                print(x[1])
+                x = str(x[1])[8-1]
+                if x == email_busca:
+                    self.contatos.remove(contato)
+                    return f'{contato} removido com sucesso!'
+        return 'nenhum contato corresponde ao email dado.'
 
     def exportar_contatos(self, nome_arquivo: str) -> None:
         """
