@@ -370,6 +370,10 @@ class Contato:
         DICA: usem o método items() de dicionários e convertam o resultado
         para uma lista com list().
         """
+        # lista_telefones = []
+        # for c, v in self._telefones.item():
+        #     lista_telefones.append((c,v))
+        # return lista_telefones
 
         return list(self._telefones.items())
 
@@ -498,10 +502,12 @@ class Agenda:
         ct = self.busca_contatos(valor_busca)
 
         for contato in ct:
-            tl = contato.lista_telefones()
-            for telefone in tl:
+            i = contato.lista_telefones()
+            for telefone in i:
                 if (telefone[0] == tipo):
-                    return f'Ligando para { contato.nome }: {str(telefone[1])}'
+                    return f'Ligando para {contato.nome}: {str(telefone[1])}'
+
+
         return 'Nenhum contato possui o tipo de telefone dado!'
         
     def apagar_contato(self, email_busca) -> str:
