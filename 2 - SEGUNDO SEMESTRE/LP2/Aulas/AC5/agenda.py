@@ -567,5 +567,9 @@ class Agenda:
         Ler um arquivo json exportado pelo método anterior e
         carregar os contatos na agenda.
         """
-        pass
+        if (nome_arquivo[-4:] != '.json'):
+            nome_arquivo += '.json'
+            
+        with open(nome_arquivo) as c:
+            return json.loads(c.read())
         
