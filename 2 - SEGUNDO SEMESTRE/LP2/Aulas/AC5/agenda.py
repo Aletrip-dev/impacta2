@@ -512,15 +512,13 @@ class Agenda:
         'Nenhum contato corresponde ao email dado.'
         """
 
-        lista = self.busca_contatos(email_busca)
-        for contato in lista:
-            for x in contato.lista_emails():
-                print(x[1])
-                x = str(x[1])[8-1]
-                if x == email_busca:
+        listagem = self.busca_contatos(email_busca)
+        for contato in listagem:
+            for valores in contato.get_emails().values():
+                if valores.email == email_busca:
                     self.contatos.remove(contato)
-                    return f'{contato} removido com sucesso!'
-        return 'nenhum contato corresponde ao email dado.'
+                    return f'{contato} excluído com sucesso!'
+        return "Nenhum contato corresponde ao email dado."
 
     def exportar_contatos(self, nome_arquivo: str) -> None:
         """
