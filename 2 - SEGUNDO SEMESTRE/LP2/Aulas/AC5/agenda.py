@@ -279,6 +279,9 @@ class Contato:
         self._telefones = {'principal':Telefone(telefone)}
         self._emails = {'principal':Email(email)}
 
+        # self.adiciona_telefone(telefone)
+        # self.adiciona_email(email)
+
     @property
     def nome(self) -> str:
         """
@@ -367,11 +370,8 @@ class Contato:
         DICA: usem o método items() de dicionários e convertam o resultado
         para uma lista com list().
         """
-        lista_telefones = []
-        for c, v in self._telefones.item():
-            lista_telefones.append((c,v))
-        return lista_telefones
 
+        return list(self._telefones.items())
 
     def lista_emails(self) -> List[Tuple[str, Email]]:
         """
@@ -472,6 +472,7 @@ class Agenda:
         correspondência (buscar) de cada contato para ver se ele deve ou não
         ser adicionado à lista
         """
+
         relacao = []
         for contato in self.contatos:
             if contato.buscar(valor_busca):
@@ -493,14 +494,16 @@ class Agenda:
         do contato verificando se o primeiro valor da tupla é igual ao tipo
         dado. Se sim, o telefone a ser chamado é o segundo valor da tupla.
         """
-     
-        l = self.busca_contatos(valor_busca.lower())
-        for contato in l:
-            for c in contato.lista_telefones():
-                if tipo == c[0]:
-                    return f'ligando para {contato.nome}: {c[1]}'
-        return f'Nenhum contato possui o tipo de telefone dado!'
+              
+        ct = self.busca_contatos(valor_busca)
 
+        for contato in ct:
+            tl = contato.lista_telefones()
+            for telefone in tl:
+                if (telefone[0] == tipo):
+                    return f'Ligando para { contato.nome }: {str(telefone[1])}'
+        return 'Nenhum contato possui o tipo de telefone dado!'
+        
     def apagar_contato(self, email_busca) -> str:
         """
         Busca um contato por email e exclui o contato da agenda.
