@@ -551,7 +551,15 @@ class Agenda:
               como parâmetro nomeado `indent` um valor inteiro positivo.
               Valores comuns são 2 ou 4.
         """
-        pass
+        if (nome_arquivo[-4:] != '.json'):
+            nome_arquivo += '.json'        
+
+        exp_lista = []
+        for contato in self.contatos:
+            exp_lista.append(contato.create_dump())
+        
+        files = open(nome_arquivo, 'w') #abre o arquivo no modo W
+        files.write(json.dumps(exp_lista, default=dumper, indent=4, ensure_ascii=True)) #grava no formato correto
 
     def carregar_contatos(self, nome_arquivo: str) -> None:
         """
@@ -560,3 +568,4 @@ class Agenda:
         carregar os contatos na agenda.
         """
         pass
+        

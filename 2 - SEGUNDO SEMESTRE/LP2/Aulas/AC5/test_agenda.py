@@ -230,7 +230,16 @@ class TestContato:
         Este teste não será disponibilizado, faça a verificação com base nas
         instruções do enunciado
         """
-        pass
+        # c1 = Contato('Rafael', '11999777888', 'rafael@exemplo.com')
+        # c2 = Contato('Alex', '11967427007', 'aletrip@msn.com')
+        # c1.get_telefones()
+        # c2.get_telefones()
+        c = Contato("Aluno", "1199999-9999", "aluno@aluno.faculdadeimpacta.com.br")
+        c.adiciona_telefone("113322-4567", "fixo")
+        c.adiciona_telefone("1198888-8888", "celular")
+        assert c.get_telefones() == {'principal': TelefoneAtualizado('1199999-9999'),
+                                    'fixo': TelefoneAtualizado('113322-4567'),
+                                    'celular': TelefoneAtualizado('1198888-8888')}       
 
     def test_17_get_emails(self):
         """
