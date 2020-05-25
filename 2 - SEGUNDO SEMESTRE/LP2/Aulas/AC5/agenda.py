@@ -1,7 +1,7 @@
 # Linguagem de Programação II
 # Atividade Contínua 04 - Classes e encapsulamento
 #
-# e-mails: aluno1@aluno.faculdadeimpacta.com.br
+# e-mails: alexandro.carvalho@aluno.faculdadeimpacta.com.br
 
 from typing import List, Tuple
 import json
@@ -569,7 +569,7 @@ class Agenda:
         """
         if (nome_arquivo[-4:] != '.json'):
             nome_arquivo += '.json'
-            
+
         with open(nome_arquivo) as c:
             return json.loads(c.read())
         
